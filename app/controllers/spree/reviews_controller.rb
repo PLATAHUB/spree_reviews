@@ -4,7 +4,7 @@ class Spree::ReviewsController < Spree::StoreController
   rescue_from ActiveRecord::RecordNotFound, with: :render_404
 
   def index
-    @approved_reviews = Spree::Review.approved.where(product: @product)
+    @approved_reviews = Spree::Review.approved.where(product: @product).order(created_at: :desc)
   end
 
   def new

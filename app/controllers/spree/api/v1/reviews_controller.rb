@@ -7,6 +7,7 @@ module Spree
         def index
           @reviews = Spree::Review.approved
                                   .where(product: @product)
+                                  .order(created_at: :desc)
                                   .page(params[:page])
                                   .per(params[:per_page])
           respond_with(@reviews)
@@ -35,8 +36,10 @@ module Spree
         private
 
         def find_product
-          @product = Spree::Product.find(params[:product_id])
+          @product = Spree::Product.friendly.distinct(false).find(id.to_s)
           authorize! :read, @product
+        rescue ActiveRecord::RecordNotFound
+          not_found unless @product
         end
 
         def permitted_review_attributes
