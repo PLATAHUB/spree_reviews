@@ -36,7 +36,7 @@ module Spree
         private
 
         def find_product
-          @product = Spree::Product.friendly.distinct(false).find(id.to_s)
+          @product = Spree::Product.friendly.distinct(false).find(params[:product_id])
           authorize! :read, @product
         rescue ActiveRecord::RecordNotFound
           not_found unless @product
