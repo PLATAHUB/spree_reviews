@@ -5,7 +5,7 @@ module Spree
         before_action :find_product, only: [:index, :create]
 
         def index
-          @reviews = Spree::Review.approved
+          @reviews = Spree::Review.default_approval_filter
                                   .where(product: @product)
                                   .order(created_at: :desc)
                                   .page(params[:page])
@@ -14,7 +14,7 @@ module Spree
         end
 
         def show
-          @review = Spree::Review.approved.find(params[:id])
+          @review = Spree::Review.default_approval_filter.find(params[:id])
           respond_with(@review)
         end
 
